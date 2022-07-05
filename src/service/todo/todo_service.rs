@@ -6,10 +6,10 @@ use rust_wheel::model::user::login_user_info::LoginUserInfo;
 use crate::model::diesel::tik::custom_tik_models::TodoAdd;
 use crate::model::diesel::tik::tik_models::Todo;
 use crate::model::request::todo::add_todo_request::AddTodoRequest;
+use crate::utils::database::get_connection;
 
 pub fn todo_create(request: &Json<AddTodoRequest>, login_user_info: LoginUserInfo) -> Result<Todo, String> {
     use crate::model::diesel::tik::tik_schema::todo as todo_table;
-    let connection = config::establish_connection();
     let bill_book_role_add = TodoAdd{
         created_time: get_current_millisecond(),
         updated_time: get_current_millisecond(),
@@ -24,7 +24,7 @@ pub fn todo_create(request: &Json<AddTodoRequest>, login_user_info: LoginUserInf
     };
     let inserted_result = diesel::insert_into(todo_table::table)
         .values(&bill_book_role_add)
-        .get_result::<Todo>(&connection);
+        .get_result::<Todo>(&get_connection());
     return Ok(inserted_result.unwrap());
 }
 
