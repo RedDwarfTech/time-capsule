@@ -19,3 +19,13 @@ pub fn list() -> Json<ApiResponse<&'static str>> {
     let boxed_response = box_type_rest_response("contents");
     return Json::from(boxed_response);
 }
+
+/// # 新增待办事项
+///
+/// 新增待办事项
+#[openapi(tag = "新增待办事项")]
+#[get("/v1/add")]
+pub fn list() -> Json<ApiResponse<&'static str>> {
+    let boxed_response = box_type_rest_response("contents");
+    return Json::from(boxed_response);
+}
