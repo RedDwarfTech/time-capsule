@@ -34,11 +34,10 @@ pub fn add(request: Json<AddTodoRequest>, login_user_info: LoginUserInfo) -> Jso
     return match todo_result {
         Ok(v) => {
             let todo_res = TodoResponse::from(&v);
-            return Json::from(box_type_rest_response(todo_res));
+            Json::from(box_type_rest_response(todo_res))
         },
         Err(e) => {
-            return Json::from(box_type_rest_response(Default::default()));
-
+            Json::from(box_type_rest_response(Default::default()))
         }
     }
 }
