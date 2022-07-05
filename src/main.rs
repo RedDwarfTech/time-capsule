@@ -35,7 +35,7 @@ pub fn create_server() -> Rocket<Build> {
         .mount(
             "/swagger-ui/",
             make_swagger_ui(&SwaggerUIConfig {
-                url: "../time-capsule/openapi.json".to_owned(),
+                url: "../tik/openapi.json".to_owned(),
                 ..Default::default()
             }),
         )
@@ -59,7 +59,7 @@ pub fn create_server() -> Rocket<Build> {
     let openapi_settings = rocket_okapi::settings::OpenApiSettings::default();
     //let custom_route_spec = (vec![], custom_openapi_spec());
     mount_endpoints_and_merged_docs! {
-        building_rocket, "/time-capsule".to_owned(), openapi_settings,
+        building_rocket, "/tik".to_owned(), openapi_settings,
         "/actuator" => health_controller::get_routes_and_docs(&openapi_settings),
         "/todo" => todo_controller::get_routes_and_docs(&openapi_settings),
 
