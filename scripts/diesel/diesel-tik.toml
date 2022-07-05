@@ -1,7 +1,7 @@
 # For documentation on how to configure this file,
 # see diesel.rs/guides/configuring-diesel-cli
 [print_schema]
-file = "src/model/diesel/tik/dict_schema.rs"
+file = "src/model/diesel/tik/tik_schema.rs"
 
 # This will cause only the users and posts tables to be output
 filter = { only_tables = ["todo","check_list"] }
