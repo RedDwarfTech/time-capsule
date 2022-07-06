@@ -7,6 +7,7 @@ use crate::model::diesel::tik::tik_models::Todo;
 pub struct TodoResponse {
     pub id: i64,
     pub name: String,
+    pub is_complete: i32
 }
 
 impl From<&Todo> for TodoResponse {
@@ -14,6 +15,7 @@ impl From<&Todo> for TodoResponse {
         Self {
             id: p.id,
             name: p.name.to_string(),
+            is_complete: p.is_complete
         }
     }
 }
