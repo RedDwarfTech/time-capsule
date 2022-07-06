@@ -7,9 +7,10 @@ use rocket_okapi::settings::OpenApiSettings;
 use rust_wheel::model::response::api_response::ApiResponse;
 use rust_wheel::model::user::login_user_info::LoginUserInfo;
 use crate::model::request::todo::add_todo_request::AddTodoRequest;
+use crate::model::request::todo::del_todo_request::DelTodoRequest;
 use crate::model::request::todo::probe_todo_request::ProbeTodoRequest;
 use crate::model::response::todo::todo_response::TodoResponse;
-use crate::service::todo::todo_service::{probe_todo, query_list, todo_create};
+use crate::service::todo::todo_service::{del_todo_list, probe_todo, query_list, todo_create};
 
 pub fn get_routes_and_docs(_settings: &OpenApiSettings) -> (Vec<rocket::Route>, OpenApi) {
     openapi_get_routes_spec![list, add, probe]
@@ -30,7 +31,7 @@ pub fn list(login_user_info: LoginUserInfo) -> Json<ApiResponse<Vec<TodoResponse
 /// # 新增待办事项
 ///
 /// 新增待办事项
-#[openapi(tag = "新增待办事项")]
+#[openapi(tag = "待办事项")]
 #[post("/v1/add",data = "<request>")]
 pub fn add(request: Json<AddTodoRequest>, login_user_info: LoginUserInfo) -> Json<ApiResponse<TodoResponse>> {
     let todo_result = todo_create(&request, login_user_info);
@@ -45,10 +46,21 @@ pub fn add(request: Json<AddTodoRequest>, login_user_info: LoginUserInfo) -> Jso
     }
 }
 
+/// # 删除待办事项
+///
+/// 删除待办事项
+#[openapi(tag = "待办事项")]
+#[delete("/v1/del?<query..>")]
+pub fn del(query: DelTodoRequest, login_user_info: LoginUserInfo) -> Json<ApiResponse<String>> {
+    del_todo_list(&query, login_user_info).expect("TODO: panic message");
+    return Json::from(box_type_rest_response("ok".parse().unwrap()));
+
+}
+
 /// # 探测变更
 ///
 /// 探测待办事项是否变更
-#[openapi(tag = "探测变更")]
+#[openapi(tag = "待办事项")]
 #[post("/v1/probe",data = "<request>")]
 pub async fn probe(request: Json<ProbeTodoRequest>, login_user_info: LoginUserInfo) -> Json<ApiResponse<bool>> {
     let todo_result = probe_todo(&request, login_user_info).await;
