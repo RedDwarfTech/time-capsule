@@ -19,6 +19,12 @@ pub struct CheckList {
     pub is_complete: i32,
 }
 
+#[derive(AsChangeset)]
+#[table_name = "todo"]
+pub struct TodoUpdate {
+    pub is_complete: i32
+}
+
 #[derive(Insertable,Queryable,QueryableByName,Debug,Serialize,Deserialize,Default,Clone)]
 #[table_name = "todo"]
 pub struct TodoAdd {
