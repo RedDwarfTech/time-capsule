@@ -50,9 +50,9 @@ pub fn add(request: Json<AddTodoRequest>, login_user_info: LoginUserInfo) -> Jso
 ///
 /// 删除待办事项
 #[openapi(tag = "待办事项")]
-#[delete("/v1/del?<query..>")]
-pub fn del(query: DelTodoRequest, login_user_info: LoginUserInfo) -> Json<ApiResponse<String>> {
-    del_todo_list(&query, login_user_info).expect("TODO: panic message");
+#[delete("/v1/del",data = "<request>")]
+pub fn del(request: Json<DelTodoRequest>, login_user_info: LoginUserInfo) -> Json<ApiResponse<String>> {
+    del_todo_list(&request, login_user_info).expect("TODO: panic message");
     return Json::from(box_type_rest_response("ok".parse().unwrap()));
 
 }

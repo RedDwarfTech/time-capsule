@@ -42,7 +42,7 @@ pub fn query_list(login_user_info: LoginUserInfo) -> Vec<Todo> {
     return results;
 }
 
-pub fn del_todo_list(request: &DelTodoRequest, login_user_info: LoginUserInfo) -> QueryResult<usize> {
+pub fn del_todo_list(request: &Json<DelTodoRequest>, login_user_info: LoginUserInfo) -> QueryResult<usize> {
     use crate::model::diesel::tik::tik_schema::todo as todo_table;
     let predicate = todo_table::dsl::id.eq(request.id).and(user_id.eq(login_user_info.userId));
     let delete_result = diesel::delete(todo_table::table.filter(predicate)).execute(&get_connection());
