@@ -1,4 +1,4 @@
-use diesel::RunQueryDsl;
+use diesel::{RunQueryDsl, QueryDsl};
 use rocket::serde::json::Json;
 use rust_wheel::common::util::time_util::get_current_millisecond;
 use rust_wheel::config::cache::redis_util::get_str_default;
@@ -8,6 +8,7 @@ use crate::model::diesel::tik::tik_models::Todo;
 use crate::model::request::todo::add_todo_request::AddTodoRequest;
 use crate::model::request::todo::probe_todo_request::ProbeTodoRequest;
 use crate::utils::database::get_connection;
+use crate::diesel::ExpressionMethods;
 
 pub fn todo_create(request: &Json<AddTodoRequest>, login_user_info: LoginUserInfo) -> Result<Todo, String> {
     use crate::model::diesel::tik::tik_schema::todo as todo_table;
@@ -27,6 +28,15 @@ pub fn todo_create(request: &Json<AddTodoRequest>, login_user_info: LoginUserInf
         .values(&bill_book_role_add)
         .get_result::<Todo>(&get_connection());
     return Ok(inserted_result.unwrap());
+}
+
+pub fn query_list(login_user_info: LoginUserInfo) -> Vec<Todo> {
+    use crate::model::diesel::tik::tik_schema::todo as todo_table;
+    let predicate = todo_table::dsl::user_id.eq(login_user_info.userId);
+    let results = todo_table::table.filter(predicate)
+        .load::<Todo>(&get_connection())
+        .expect("Error loading playlist");
+    return results;
 }
 
 pub async fn probe_todo(request: &Json<ProbeTodoRequest>, login_user_info: LoginUserInfo) -> Result<bool, String> {

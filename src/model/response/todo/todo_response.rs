@@ -5,13 +5,15 @@ use crate::model::diesel::tik::tik_models::Todo;
 
 #[derive(Debug, Serialize, JsonSchema, Default)]
 pub struct TodoResponse {
-    pub id: i64
+    pub id: i64,
+    pub name: String,
 }
 
 impl From<&Todo> for TodoResponse {
     fn from(p: &Todo) -> Self {
         Self {
-            id: p.id
+            id: p.id,
+            name: p.name.to_string(),
         }
     }
 }

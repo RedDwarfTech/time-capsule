@@ -1,6 +1,6 @@
 use okapi::openapi3::OpenApi;
 use rocket::serde::json::Json;
-use rust_wheel::common::util::model_convert::{box_rest_response, box_type_rest_response};
+use rust_wheel::common::util::model_convert::{ box_type_rest_response, map_entity };
 
 use rocket_okapi::{openapi, openapi_get_routes_spec};
 use rocket_okapi::settings::OpenApiSettings;
@@ -9,10 +9,10 @@ use rust_wheel::model::user::login_user_info::LoginUserInfo;
 use crate::model::request::todo::add_todo_request::AddTodoRequest;
 use crate::model::request::todo::probe_todo_request::ProbeTodoRequest;
 use crate::model::response::todo::todo_response::TodoResponse;
-use crate::service::todo::todo_service::{probe_todo, todo_create};
+use crate::service::todo::todo_service::{probe_todo, query_list, todo_create};
 
 pub fn get_routes_and_docs(_settings: &OpenApiSettings) -> (Vec<rocket::Route>, OpenApi) {
-    openapi_get_routes_spec![list, add]
+    openapi_get_routes_spec![list, add, probe]
 }
 
 /// # 查询待办事项列表
@@ -20,8 +20,10 @@ pub fn get_routes_and_docs(_settings: &OpenApiSettings) -> (Vec<rocket::Route>, 
 /// 返回待办事项列表
 #[openapi(tag = "待办事项")]
 #[get("/v1/list")]
-pub fn list() -> Json<ApiResponse<&'static str>> {
-    let boxed_response = box_type_rest_response("contents");
+pub fn list(login_user_info: LoginUserInfo) -> Json<ApiResponse<Vec<TodoResponse>>> {
+    let todo_list = query_list(login_user_info);
+    let todo_resp = map_entity(todo_list);
+    let boxed_response = box_type_rest_response(todo_resp);
     return Json::from(boxed_response);
 }
 
