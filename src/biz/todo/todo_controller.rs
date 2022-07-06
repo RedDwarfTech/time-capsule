@@ -13,7 +13,7 @@ use crate::model::response::todo::todo_response::TodoResponse;
 use crate::service::todo::todo_service::{del_todo_list, probe_todo, query_list, todo_create};
 
 pub fn get_routes_and_docs(_settings: &OpenApiSettings) -> (Vec<rocket::Route>, OpenApi) {
-    openapi_get_routes_spec![list, add, probe]
+    openapi_get_routes_spec![list, add, probe, del]
 }
 
 /// # 查询待办事项列表
