@@ -15,7 +15,7 @@ use rocket_okapi::{mount_endpoints_and_merged_docs, OpenApiError, rapidoc::*, sw
 use rocket_okapi::settings::UrlObject;
 
 use common::health_controller;
-use biz::todo::todo_controller;
+use biz::todo::task_controller;
 use biz::todo::todo_list_controller;
 
 pub type Result<T> = std::result::Result<T, OpenApiError>;
@@ -46,7 +46,7 @@ pub fn create_server() -> Rocket<Build> {
         .mount(
             "/rapidoc/",
             make_rapidoc(&RapiDocConfig {
-                title: Some("My special documentation | RapiDoc".to_owned()),
+                title: Some("TikTik documentation | RapiDoc".to_owned()),
                 general: GeneralConfig {
                     spec_urls: vec![UrlObject::new("General", "../v1/openapi.json")],
                     ..Default::default()
@@ -65,7 +65,7 @@ pub fn create_server() -> Rocket<Build> {
     mount_endpoints_and_merged_docs! {
         building_rocket, "/tik".to_owned(), openapi_settings,
         "/actuator" => health_controller::get_routes_and_docs(&openapi_settings),
-        "/todo" => todo_controller::get_routes_and_docs(&openapi_settings),
+        "/todo" => task_controller::get_routes_and_docs(&openapi_settings),
         "/list" => todo_list_controller::get_routes_and_docs(&openapi_settings)
 
     };

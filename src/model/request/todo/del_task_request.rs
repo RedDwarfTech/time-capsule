@@ -5,6 +5,6 @@ use rocket_okapi::okapi::schemars;
 
 #[derive(Debug, PartialEq, Eq, Deserialize, JsonSchema,FromForm, Serialize)]
 #[allow(non_snake_case)]
-pub struct DelTodoRequest {
+pub struct DelTaskRequest {
     pub id: i64
 }

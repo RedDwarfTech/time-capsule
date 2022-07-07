@@ -5,15 +5,15 @@ use rust_wheel::config::cache::redis_util::get_str_default;
 use rust_wheel::model::user::login_user_info::LoginUserInfo;
 use crate::model::diesel::tik::custom_tik_models::{TodoAdd, TodoUpdate};
 use crate::model::diesel::tik::tik_models::{Todo};
-use crate::model::request::todo::add_todo_request::AddTodoRequest;
+use crate::model::request::todo::add_task_request::AddTaskRequest;
 use crate::model::request::todo::probe_todo_request::ProbeTodoRequest;
 use crate::utils::database::get_connection;
 use crate::diesel::ExpressionMethods;
 use crate::model::diesel::tik::tik_schema::todo::user_id;
-use crate::model::request::todo::del_todo_request::DelTodoRequest;
+use crate::model::request::todo::del_task_request::DelTaskRequest;
 use crate::model::request::todo::update_todo_request::UpdateTodoRequest;
 
-pub fn todo_create(request: &Json<AddTodoRequest>, login_user_info: LoginUserInfo) -> Result<Todo, String> {
+pub fn task_create(request: &Json<AddTaskRequest>, login_user_info: LoginUserInfo) -> Result<Todo, String> {
     use crate::model::diesel::tik::tik_schema::todo as todo_table;
     let bill_book_role_add = TodoAdd{
         created_time: get_current_millisecond(),
@@ -33,7 +33,7 @@ pub fn todo_create(request: &Json<AddTodoRequest>, login_user_info: LoginUserInf
     return Ok(inserted_result.unwrap());
 }
 
-pub fn query_todo(login_user_info: LoginUserInfo) -> Vec<Todo> {
+pub fn query_task(login_user_info: LoginUserInfo) -> Vec<Todo> {
     use crate::model::diesel::tik::tik_schema::todo as todo_table;
     let predicate = todo_table::dsl::user_id.eq(login_user_info.userId);
     let results = todo_table::table.filter(predicate)
@@ -42,14 +42,14 @@ pub fn query_todo(login_user_info: LoginUserInfo) -> Vec<Todo> {
     return results;
 }
 
-pub fn del_todo_list(request: &Json<DelTodoRequest>, login_user_info: LoginUserInfo) -> QueryResult<usize> {
+pub fn del_task(request: &Json<DelTaskRequest>, login_user_info: LoginUserInfo) -> QueryResult<usize> {
     use crate::model::diesel::tik::tik_schema::todo as todo_list_table;
     let predicate = todo_list_table::dsl::id.eq(request.id).and(user_id.eq(login_user_info.userId));
     let delete_result = diesel::delete(todo_list_table::table.filter(predicate)).execute(&get_connection());
     return delete_result;
 }
 
-pub fn update_todo(request: &Json<UpdateTodoRequest>, login_user_info: LoginUserInfo) -> Todo {
+pub fn update_task(request: &Json<UpdateTodoRequest>, login_user_info: LoginUserInfo) -> Todo {
     use crate::model::diesel::tik::tik_schema::todo as todo_list_table;
     let predicate = todo_list_table::dsl::id.eq(request.id).and(user_id.eq(login_user_info.userId));
     let update_result = diesel::update(todo_list_table::table.filter(predicate))

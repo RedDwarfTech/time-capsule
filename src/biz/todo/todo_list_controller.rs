@@ -6,11 +6,12 @@ use rocket_okapi::{openapi, openapi_get_routes_spec};
 use rocket_okapi::settings::OpenApiSettings;
 use rust_wheel::model::response::api_response::ApiResponse;
 use rust_wheel::model::user::login_user_info::LoginUserInfo;
-use crate::model::request::todo::add_todo_request::AddTodoRequest;
-use crate::model::request::todo::del_todo_request::DelTodoRequest;
+use crate::model::request::todo::add_task_request::AddTaskRequest;
+use crate::model::request::todo::del_task_request::DelTaskRequest;
+use crate::model::request::todo::update_todo_list_request::UpdateTodoListRequest;
 use crate::model::response::todo::todo_list_response::TodoListResponse;
-use crate::service::todo::todo_list_service::{todo_list_create, query_todo_list};
-use crate::service::todo::todo_service::{del_todo_list};
+use crate::service::todo::todo_list_service::{todo_list_create, query_todo_list, update_todo_list, del_todo_list};
+use crate::service::todo::task_service::{del_task};
 
 pub fn get_routes_and_docs(_settings: &OpenApiSettings) -> (Vec<rocket::Route>, OpenApi) {
     openapi_get_routes_spec![list, add, del]
@@ -33,7 +34,7 @@ pub fn list(login_user_info: LoginUserInfo) -> Json<ApiResponse<Vec<TodoListResp
 /// 新增清单
 #[openapi(tag = "清单")]
 #[post("/v1/add",data = "<request>")]
-pub fn add(request: Json<AddTodoRequest>, login_user_info: LoginUserInfo) -> Json<ApiResponse<TodoListResponse>> {
+pub fn add(request: Json<AddTaskRequest>, login_user_info: LoginUserInfo) -> Json<ApiResponse<TodoListResponse>> {
     let todo_result = todo_list_create(&request, login_user_info);
     return match todo_result {
         Ok(v) => {
@@ -46,12 +47,24 @@ pub fn add(request: Json<AddTodoRequest>, login_user_info: LoginUserInfo) -> Jso
     }
 }
 
+/// # 更新清单
+///
+/// 更新清单
+#[openapi(tag = "清单")]
+#[patch("/v1/update",data = "<request>")]
+pub fn update(request: Json<UpdateTodoListRequest>, login_user_info: LoginUserInfo) -> Json<ApiResponse<TodoListResponse>> {
+    let updated_todo = update_todo_list(&request, login_user_info);
+    let todo_response = TodoListResponse::from(&updated_todo);
+    return Json::from(box_type_rest_response(todo_response));
+
+}
+
 /// # 删除清单
 ///
 /// 删除清单
 #[openapi(tag = "清单")]
 #[delete("/v1/del",data = "<request>")]
-pub fn del(request: Json<DelTodoRequest>, login_user_info: LoginUserInfo) -> Json<ApiResponse<String>> {
+pub fn del(request: Json<DelTaskRequest>, login_user_info: LoginUserInfo) -> Json<ApiResponse<String>> {
     del_todo_list(&request, login_user_info).expect("TODO: panic message");
     return Json::from(box_type_rest_response("ok".parse().unwrap()));
 
