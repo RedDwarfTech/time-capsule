@@ -4,4 +4,8 @@
 file = "src/model/diesel/tik/tik_schema.rs"
 
 # This will cause only the users and posts tables to be output
-filter = { only_tables = ["todo","check_list"] }
+filter = { only_tables = [
+    "todo",
+    "check_list",
+    "todo_list"
+] }

@@ -16,6 +16,7 @@ use rocket_okapi::settings::UrlObject;
 
 use common::health_controller;
 use biz::todo::todo_controller;
+use biz::todo::todo_list_controller;
 
 pub type Result<T> = std::result::Result<T, OpenApiError>;
 
@@ -65,6 +66,7 @@ pub fn create_server() -> Rocket<Build> {
         building_rocket, "/tik".to_owned(), openapi_settings,
         "/actuator" => health_controller::get_routes_and_docs(&openapi_settings),
         "/todo" => todo_controller::get_routes_and_docs(&openapi_settings),
+        "/list" => todo_list_controller::get_routes_and_docs(&openapi_settings)
 
     };
 

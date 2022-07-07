@@ -35,3 +35,18 @@ pub struct Todo {
     pub description: Option<String>,
 }
 
+#[derive(Insertable,Queryable,QueryableByName,Debug,Serialize,Deserialize,Default,Clone)]
+#[table_name = "todo_list"]
+pub struct TodoList {
+    pub id: i64,
+    pub created_time: i64,
+    pub updated_time: i64,
+    pub deleted: i32,
+    pub name: String,
+    pub user_id: i64,
+    pub parent_id: i64,
+    pub list_type: i32,
+    pub color: Option<String>,
+    pub node_type: i32,
+}
+
