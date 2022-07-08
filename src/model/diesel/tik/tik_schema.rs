@@ -23,6 +23,7 @@ table! {
         priority -> Int4,
         schedule_time -> Int8,
         description -> Nullable<Varchar>,
+        parent -> Int8,
     }
 }
 
