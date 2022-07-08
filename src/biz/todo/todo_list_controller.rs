@@ -11,10 +11,9 @@ use crate::model::request::todo::del_task_request::DelTaskRequest;
 use crate::model::request::todo::update_todo_list_request::UpdateTodoListRequest;
 use crate::model::response::todo::todo_list_response::TodoListResponse;
 use crate::service::todo::todo_list_service::{todo_list_create, query_todo_list, update_todo_list, del_todo_list};
-use crate::service::todo::task_service::{del_task};
 
 pub fn get_routes_and_docs(_settings: &OpenApiSettings) -> (Vec<rocket::Route>, OpenApi) {
-    openapi_get_routes_spec![list, add, del]
+    openapi_get_routes_spec![list, add, del, update]
 }
 
 /// # 查询清单列表
@@ -41,7 +40,7 @@ pub fn add(request: Json<AddTaskRequest>, login_user_info: LoginUserInfo) -> Jso
             let todo_res = TodoListResponse::from(&v);
             Json::from(box_type_rest_response(todo_res))
         },
-        Err(e) => {
+        Err(_e) => {
             Json::from(box_type_rest_response(Default::default()))
         }
     }

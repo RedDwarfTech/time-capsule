@@ -41,7 +41,7 @@ pub fn add(request: Json<AddTaskRequest>, login_user_info: LoginUserInfo) -> Jso
             let todo_res = TodoResponse::from(&v);
             Json::from(box_type_rest_response(todo_res))
         },
-        Err(e) => {
+        Err(_e) => {
             Json::from(box_type_rest_response(Default::default()))
         }
     }
@@ -74,14 +74,14 @@ pub fn update(request: Json<UpdateTodoRequest>, login_user_info: LoginUserInfo) 
 ///
 /// 探测待办事项是否变更
 #[openapi(tag = "待办事项")]
-#[post("/v1/probe",data = "<request>")]
-pub async fn probe(request: Json<ProbeTodoRequest>, login_user_info: LoginUserInfo) -> Json<ApiResponse<bool>> {
-    let todo_result = probe_todo(&request, login_user_info).await;
+#[post("/v1/probe",data = "<_request>")]
+pub async fn probe(_request: Json<ProbeTodoRequest>, login_user_info: LoginUserInfo) -> Json<ApiResponse<bool>> {
+    let todo_result = probe_todo(login_user_info).await;
     return match todo_result {
         Ok(v) => {
             Json::from(box_type_rest_response(v))
         },
-        Err(e) => {
+        Err(_e) => {
             Json::from(box_type_rest_response(false))
         }
     }

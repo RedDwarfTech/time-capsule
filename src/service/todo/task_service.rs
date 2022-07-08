@@ -6,7 +6,6 @@ use rust_wheel::model::user::login_user_info::LoginUserInfo;
 use crate::model::diesel::tik::custom_tik_models::{TodoAdd, TodoUpdate};
 use crate::model::diesel::tik::tik_models::{Todo};
 use crate::model::request::todo::add_task_request::AddTaskRequest;
-use crate::model::request::todo::probe_todo_request::ProbeTodoRequest;
 use crate::utils::database::get_connection;
 use crate::diesel::ExpressionMethods;
 use crate::model::diesel::tik::tik_schema::todo::user_id;
@@ -60,7 +59,7 @@ pub fn update_task(request: &Json<UpdateTodoRequest>, login_user_info: LoginUser
     return update_result.unwrap();
 }
 
-pub async fn probe_todo(request: &Json<ProbeTodoRequest>, login_user_info: LoginUserInfo) -> Result<bool, String> {
+pub async fn probe_todo(login_user_info: LoginUserInfo) -> Result<bool, String> {
     let together = format!("{}{}", "tik:biz:user:", login_user_info.userId);
     let cached_user = get_str_default(&*together).await;
     if cached_user.as_ref().unwrap() == "null" || cached_user.as_ref().unwrap().is_empty() {
