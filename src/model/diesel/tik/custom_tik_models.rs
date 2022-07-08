@@ -22,7 +22,8 @@ pub struct CheckList {
 #[derive(AsChangeset)]
 #[table_name = "todo"]
 pub struct TodoUpdate {
-    pub is_complete: i32
+    pub is_complete: Option<i32>,
+    pub name: Option<String>,
 }
 
 #[derive(AsChangeset)]

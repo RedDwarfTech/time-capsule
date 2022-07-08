@@ -54,6 +54,7 @@ pub fn update_task(request: &Json<UpdateTodoRequest>, login_user_info: LoginUser
     let update_result = diesel::update(todo_list_table::table.filter(predicate))
         .set(&TodoUpdate{
             is_complete: request.is_complete,
+            name: request.name.clone(),
         })
         .get_result::<Todo>(&get_connection());
     return update_result.unwrap();
