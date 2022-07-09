@@ -6,5 +6,6 @@ use rocket_okapi::okapi::schemars;
 #[derive(Debug, PartialEq, Eq, Deserialize, JsonSchema, Serialize)]
 #[allow(non_snake_case)]
 pub struct AddTaskRequest {
-    pub name: String
+    pub name: String,
+    pub parent: i64
 }

@@ -45,6 +45,7 @@ pub struct TodoAdd {
     pub priority: i32,
     pub schedule_time: i64,
     pub description: Option<String>,
+    pub parent: i64
 }
 
 #[derive(Insertable,Queryable,QueryableByName,Debug,Serialize,Deserialize,Default,Clone)]
