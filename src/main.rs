@@ -65,7 +65,7 @@ pub fn create_server() -> Rocket<Build> {
     mount_endpoints_and_merged_docs! {
         building_rocket, "/tik".to_owned(), openapi_settings,
         "/actuator" => health_controller::get_routes_and_docs(&openapi_settings),
-        "/todo" => task_controller::get_routes_and_docs(&openapi_settings),
+        "/task" => task_controller::get_routes_and_docs(&openapi_settings),
         "/list" => todo_list_controller::get_routes_and_docs(&openapi_settings)
 
     };
