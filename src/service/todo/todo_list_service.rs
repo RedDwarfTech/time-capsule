@@ -21,7 +21,7 @@ pub fn todo_list_create(request: &Json<AddTaskRequest>, login_user_info: LoginUs
         user_id: login_user_info.userId,
         parent_id: 0,
         list_type: 0,
-        color: None,
+        color: 0,
         node_type: 0
     };
     let inserted_result = diesel::insert_into(todo_list_table::table)

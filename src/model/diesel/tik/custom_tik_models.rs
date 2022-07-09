@@ -57,6 +57,6 @@ pub struct TodoListAdd {
     pub user_id: i64,
     pub parent_id: i64,
     pub list_type: i32,
-    pub color: Option<String>,
+    pub color: i32,
     pub node_type: i32,
 }

@@ -37,7 +37,7 @@ table! {
         user_id -> Int8,
         parent_id -> Int8,
         list_type -> Int4,
-        color -> Nullable<Varchar>,
+        color -> Int4,
         node_type -> Int4,
     }
 }

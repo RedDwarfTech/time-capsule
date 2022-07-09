@@ -6,7 +6,10 @@ use crate::model::diesel::tik::tik_models::{TodoList};
 #[derive(Debug, Serialize, JsonSchema, Default)]
 pub struct TodoListResponse {
     pub id: i64,
-    pub name: String
+    pub name: String,
+    pub color: i32,
+    pub parent_id: i64,
+    pub node_type: i32
 }
 
 impl From<&TodoList> for TodoListResponse {
@@ -14,6 +17,9 @@ impl From<&TodoList> for TodoListResponse {
         Self {
             id: p.id,
             name: p.name.to_string(),
+            color: p.color,
+            parent_id: p.parent_id,
+            node_type: p.node_type
         }
     }
 }
