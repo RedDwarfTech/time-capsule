@@ -7,5 +7,5 @@ use rocket_okapi::okapi::schemars;
 #[allow(non_snake_case)]
 pub struct AddTodoRequest {
     pub name: String,
-    pub parent: i64
+    pub parent_id: i64
 }

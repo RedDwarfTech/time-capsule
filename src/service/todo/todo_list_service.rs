@@ -19,7 +19,7 @@ pub fn todo_list_create(request: &Json<AddTodoRequest>, login_user_info: LoginUs
         deleted: 0,
         name: request.name.to_string(),
         user_id: login_user_info.userId,
-        parent_id: 0,
+        parent_id: request.parent_id,
         list_type: 0,
         color: 0,
         node_type: 0
