@@ -4,14 +4,14 @@ use rust_wheel::common::util::time_util::get_current_millisecond;
 use rust_wheel::model::user::login_user_info::LoginUserInfo;
 use crate::model::diesel::tik::custom_tik_models::{TodoListAdd, TodoListUpdate};
 use crate::model::diesel::tik::tik_models::{ TodoList};
-use crate::model::request::todo::add_task_request::AddTaskRequest;
+use crate::model::request::todo::add_todo_request::{ AddTodoRequest};
 use crate::utils::database::get_connection;
 use crate::diesel::ExpressionMethods;
 use crate::model::diesel::tik::tik_schema::todo::user_id;
 use crate::model::request::todo::del_task_request::DelTaskRequest;
 use crate::model::request::todo::update_todo_list_request::UpdateTodoListRequest;
 
-pub fn todo_list_create(request: &Json<AddTaskRequest>, login_user_info: LoginUserInfo) -> Result<TodoList, String> {
+pub fn todo_list_create(request: &Json<AddTodoRequest>, login_user_info: LoginUserInfo) -> Result<TodoList, String> {
     use crate::model::diesel::tik::tik_schema::todo_list as todo_list_table;
     let bill_book_role_add = TodoListAdd{
         created_time: get_current_millisecond(),

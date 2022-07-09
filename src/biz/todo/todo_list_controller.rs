@@ -6,7 +6,7 @@ use rocket_okapi::{openapi, openapi_get_routes_spec};
 use rocket_okapi::settings::OpenApiSettings;
 use rust_wheel::model::response::api_response::ApiResponse;
 use rust_wheel::model::user::login_user_info::LoginUserInfo;
-use crate::model::request::todo::add_task_request::AddTaskRequest;
+use crate::model::request::todo::add_todo_request::AddTodoRequest;
 use crate::model::request::todo::del_task_request::DelTaskRequest;
 use crate::model::request::todo::update_todo_list_request::UpdateTodoListRequest;
 use crate::model::response::todo::todo_list_response::TodoListResponse;
@@ -33,7 +33,7 @@ pub fn list(login_user_info: LoginUserInfo) -> Json<ApiResponse<Vec<TodoListResp
 /// 新增清单
 #[openapi(tag = "清单")]
 #[post("/v1/add",data = "<request>")]
-pub fn add(request: Json<AddTaskRequest>, login_user_info: LoginUserInfo) -> Json<ApiResponse<TodoListResponse>> {
+pub fn add(request: Json<AddTodoRequest>, login_user_info: LoginUserInfo) -> Json<ApiResponse<TodoListResponse>> {
     let todo_result = todo_list_create(&request, login_user_info);
     return match todo_result {
         Ok(v) => {

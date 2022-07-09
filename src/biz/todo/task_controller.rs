@@ -6,7 +6,7 @@ use rocket_okapi::{openapi, openapi_get_routes_spec};
 use rocket_okapi::settings::OpenApiSettings;
 use rust_wheel::model::response::api_response::ApiResponse;
 use rust_wheel::model::user::login_user_info::LoginUserInfo;
-use crate::model::request::todo::add_task_request::AddTaskRequest;
+use crate::model::request::task::add_task_request::AddTaskRequest;
 use crate::model::request::todo::del_task_request::DelTaskRequest;
 use crate::model::request::todo::probe_todo_request::ProbeTodoRequest;
 use crate::model::request::todo::update_todo_request::UpdateTodoRequest;
