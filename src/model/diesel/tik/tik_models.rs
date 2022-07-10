@@ -49,5 +49,7 @@ pub struct TodoList {
     pub list_type: i32,
     pub color: i32,
     pub node_type: i32,
+    pub is_sys: i32,
+    pub is_default: i32,
 }
 

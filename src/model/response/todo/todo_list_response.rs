@@ -9,7 +9,9 @@ pub struct TodoListResponse {
     pub name: String,
     pub color: i32,
     pub parent_id: i64,
-    pub node_type: i32
+    pub node_type: i32,
+    pub is_default: i32,
+    pub is_sys: i32,
 }
 
 impl From<&TodoList> for TodoListResponse {
@@ -19,7 +21,9 @@ impl From<&TodoList> for TodoListResponse {
             name: p.name.to_string(),
             color: p.color,
             parent_id: p.parent_id,
-            node_type: p.node_type
+            node_type: p.node_type,
+            is_default: p.is_default,
+            is_sys: p.is_sys
         }
     }
 }

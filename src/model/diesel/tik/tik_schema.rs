@@ -39,6 +39,8 @@ table! {
         list_type -> Int4,
         color -> Int4,
         node_type -> Int4,
+        is_sys -> Int4,
+        is_default -> Int4,
     }
 }
 
