@@ -9,4 +9,5 @@ pub struct AddTaskRequest {
     pub name: String,
     pub parent: i64,
     pub schedule_time: Option<i64>,
+    pub description: Option<String>,
 }
