@@ -7,7 +7,7 @@ use rocket_okapi::settings::OpenApiSettings;
 use rust_wheel::model::response::api_response::ApiResponse;
 use rust_wheel::model::user::login_user_info::LoginUserInfo;
 use crate::model::request::todo::add_todo_request::AddTodoRequest;
-use crate::model::request::todo::del_task_request::DelTaskRequest;
+use crate::model::request::todo::del_todo_list_request::DelTodoListRequest;
 use crate::model::request::todo::update_todo_list_request::UpdateTodoListRequest;
 use crate::model::response::todo::todo_list_response::TodoListResponse;
 use crate::service::todo::todo_list_service::{todo_list_create, query_todo_list, update_todo_list, del_todo_list};
@@ -63,7 +63,7 @@ pub fn update(request: Json<UpdateTodoListRequest>, login_user_info: LoginUserIn
 /// 删除清单
 #[openapi(tag = "清单")]
 #[delete("/v1/del",data = "<request>")]
-pub fn del(request: Json<DelTaskRequest>, login_user_info: LoginUserInfo) -> Json<ApiResponse<String>> {
+pub fn del(request: Json<DelTodoListRequest>, login_user_info: LoginUserInfo) -> Json<ApiResponse<String>> {
     del_todo_list(&request, login_user_info).expect("TODO: panic message");
     return Json::from(box_type_rest_response("ok".parse().unwrap()));
 

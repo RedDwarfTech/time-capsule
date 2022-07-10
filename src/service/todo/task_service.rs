@@ -43,9 +43,9 @@ pub fn query_task(login_user_info: LoginUserInfo) -> Vec<Todo> {
 }
 
 pub fn del_task(request: &Json<DelTaskRequest>, login_user_info: LoginUserInfo) -> QueryResult<usize> {
-    use crate::model::diesel::tik::tik_schema::todo as todo_list_table;
-    let predicate = todo_list_table::dsl::id.eq(request.id).and(user_id.eq(login_user_info.userId));
-    let delete_result = diesel::delete(todo_list_table::table.filter(predicate)).execute(&get_connection());
+    use crate::model::diesel::tik::tik_schema::todo as todo_table;
+    let predicate = todo_table::dsl::id.eq(request.id).and(user_id.eq(login_user_info.userId));
+    let delete_result = diesel::delete(todo_table::table.filter(predicate)).execute(&get_connection());
     return delete_result;
 }
 

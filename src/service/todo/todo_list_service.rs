@@ -5,10 +5,9 @@ use rust_wheel::model::user::login_user_info::LoginUserInfo;
 use crate::model::diesel::tik::custom_tik_models::{TodoListAdd, TodoListUpdate};
 use crate::model::diesel::tik::tik_models::{ TodoList};
 use crate::model::request::todo::add_todo_request::{ AddTodoRequest};
+use crate::model::request::todo::del_todo_list_request::DelTodoListRequest;
 use crate::utils::database::get_connection;
 use crate::diesel::ExpressionMethods;
-use crate::model::diesel::tik::tik_schema::todo::user_id;
-use crate::model::request::todo::del_task_request::DelTaskRequest;
 use crate::model::request::todo::update_todo_list_request::UpdateTodoListRequest;
 
 pub fn todo_list_create(request: &Json<AddTodoRequest>, login_user_info: LoginUserInfo) -> Result<TodoList, String> {
@@ -39,10 +38,11 @@ pub fn query_todo_list(login_user_info: LoginUserInfo) -> Vec<TodoList> {
     return results;
 }
 
-pub fn del_todo_list(request: &Json<DelTaskRequest>, login_user_info: LoginUserInfo) -> QueryResult<usize> {
-    use crate::model::diesel::tik::tik_schema::todo as todo_table;
-    let predicate = todo_table::dsl::id.eq(request.id).and(user_id.eq(login_user_info.userId));
-    let delete_result = diesel::delete(todo_table::table.filter(predicate)).execute(&get_connection());
+pub fn del_todo_list(request: &Json<DelTodoListRequest>, login_user_info: LoginUserInfo) -> QueryResult<usize> {
+    use crate::model::diesel::tik::tik_schema::todo_list as todo_list_table;
+    // https://github.com/diesel-rs/diesel/issues/1369
+    let predicate = todo_list_table::dsl::id.eq(request.id).and(todo_list_table::dsl::user_id.eq(login_user_info.userId));
+    let delete_result = diesel::delete(todo_list_table::table.filter(predicate)).execute(&get_connection());
     return delete_result;
 }
 
