@@ -24,7 +24,7 @@ pub fn task_create(request: &Json<AddTaskRequest>, login_user_info: LoginUserInf
         tags: "".to_string(),
         user_id: login_user_info.userId,
         is_complete: 0,
-        priority: 0,
+        priority: request.priority.unwrap_or(0),
         schedule_time: request.schedule_time.unwrap_or(current_time),
         description: request.description.clone(),
         parent: request.parent,
@@ -62,7 +62,8 @@ pub fn update_task(request: &Json<UpdateTodoRequest>, login_user_info: LoginUser
             is_complete: request.is_complete,
             complete_time: request.complete_time,
             name: request.name.clone(),
-            description: request.description.clone()
+            description: request.description.clone(),
+            priority: request.priority.clone(),
         })
         .get_result::<Todo>(&get_connection());
     return update_result.unwrap();

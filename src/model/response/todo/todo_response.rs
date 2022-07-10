@@ -8,7 +8,11 @@ pub struct TodoResponse {
     pub id: i64,
     pub name: String,
     pub is_complete: i32,
-    pub parent: i64
+    pub parent: i64,
+    pub description: Option<String>,
+    pub priority: i32,
+    pub schedule_time: i64,
+    pub complete_time: i64
 }
 
 impl From<&Todo> for TodoResponse {
@@ -17,7 +21,11 @@ impl From<&Todo> for TodoResponse {
             id: p.id,
             name: p.name.to_string(),
             is_complete: p.is_complete,
-            parent: p.parent
+            parent: p.parent,
+            description: p.description.clone(),
+            priority: p.priority,
+            schedule_time: p.schedule_time,
+            complete_time: p.complete_time.unwrap_or_default(),
         }
     }
 }

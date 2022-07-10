@@ -11,4 +11,5 @@ pub struct UpdateTodoRequest {
     pub complete_time: Option<i64>,
     pub name: Option<String>,
     pub description: Option<String>,
+    pub priority: Option<i32>
 }
