@@ -8,5 +8,6 @@ use rocket_okapi::okapi::schemars;
 pub struct UpdateTodoRequest {
     pub id: i64,
     pub is_complete: Option<i32>,
+    pub complete_time: Option<i64>,
     pub name: Option<String>,
 }

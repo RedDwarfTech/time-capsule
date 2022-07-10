@@ -24,6 +24,7 @@ table! {
         schedule_time -> Int8,
         description -> Nullable<Varchar>,
         parent -> Int8,
+        complete_time -> Nullable<Int8>,
     }
 }
 

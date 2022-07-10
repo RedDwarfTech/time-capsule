@@ -15,6 +15,7 @@ use crate::model::request::todo::update_todo_request::UpdateTodoRequest;
 
 pub fn task_create(request: &Json<AddTaskRequest>, login_user_info: LoginUserInfo) -> Result<Todo, String> {
     use crate::model::diesel::tik::tik_schema::todo as todo_table;
+    let current_time = get_current_millisecond();
     let bill_book_role_add = TodoAdd{
         created_time: get_current_millisecond(),
         updated_time: get_current_millisecond(),
@@ -24,9 +25,10 @@ pub fn task_create(request: &Json<AddTaskRequest>, login_user_info: LoginUserInf
         user_id: login_user_info.userId,
         is_complete: 0,
         priority: 0,
-        schedule_time: 0,
+        schedule_time: request.schedule_time.unwrap_or(current_time),
         description: None,
         parent: request.parent,
+        complete_time: None,
     };
     let inserted_result = diesel::insert_into(todo_table::table)
         .values(&bill_book_role_add)
@@ -58,6 +60,7 @@ pub fn update_task(request: &Json<UpdateTodoRequest>, login_user_info: LoginUser
     let update_result = diesel::update(todo_list_table::table.filter(predicate))
         .set(&TodoUpdate{
             is_complete: request.is_complete,
+            complete_time: request.complete_time,
             name: request.name.clone(),
         })
         .get_result::<Todo>(&get_connection());

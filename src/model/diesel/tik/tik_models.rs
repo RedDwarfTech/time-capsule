@@ -34,6 +34,7 @@ pub struct Todo {
     pub schedule_time: i64,
     pub description: Option<String>,
     pub parent: i64,
+    pub complete_time: Option<i64>,
 }
 
 #[derive(Insertable,Queryable,QueryableByName,Debug,Serialize,Deserialize,Default,Clone)]

@@ -23,6 +23,7 @@ pub struct CheckList {
 #[table_name = "todo"]
 pub struct TodoUpdate {
     pub is_complete: Option<i32>,
+    pub complete_time: Option<i64>,
     pub name: Option<String>,
 }
 
@@ -45,7 +46,8 @@ pub struct TodoAdd {
     pub priority: i32,
     pub schedule_time: i64,
     pub description: Option<String>,
-    pub parent: i64
+    pub parent: i64,
+    pub complete_time: Option<i64>
 }
 
 #[derive(Insertable,Queryable,QueryableByName,Debug,Serialize,Deserialize,Default,Clone)]

@@ -7,5 +7,6 @@ use rocket_okapi::okapi::schemars;
 #[allow(non_snake_case)]
 pub struct AddTaskRequest {
     pub name: String,
-    pub parent: i64
+    pub parent: i64,
+    pub schedule_time: Option<i64>,
 }
