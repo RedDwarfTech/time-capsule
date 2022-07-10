@@ -7,6 +7,7 @@ use rocket_okapi::settings::OpenApiSettings;
 use rust_wheel::model::response::api_response::ApiResponse;
 use rust_wheel::model::user::login_user_info::LoginUserInfo;
 use crate::model::request::task::add_task_request::AddTaskRequest;
+use crate::model::request::task::query_task_request::QueryTaskRequest;
 use crate::model::request::todo::del_task_request::DelTaskRequest;
 use crate::model::request::todo::probe_todo_request::ProbeTodoRequest;
 use crate::model::request::todo::update_todo_request::UpdateTodoRequest;
@@ -21,9 +22,9 @@ pub fn get_routes_and_docs(_settings: &OpenApiSettings) -> (Vec<rocket::Route>, 
 ///
 /// 返回待办事项列表
 #[openapi(tag = "待办事项")]
-#[get("/v1/list")]
-pub fn list(login_user_info: LoginUserInfo) -> Json<ApiResponse<Vec<TodoResponse>>> {
-    let todo_list = query_task(login_user_info);
+#[get("/v1/list?<query..>")]
+pub fn list(query: QueryTaskRequest, login_user_info: LoginUserInfo) -> Json<ApiResponse<Vec<TodoResponse>>> {
+    let todo_list = query_task(query, login_user_info);
     let todo_resp = map_entity(todo_list);
     let boxed_response = box_type_rest_response(todo_resp);
     return Json::from(boxed_response);

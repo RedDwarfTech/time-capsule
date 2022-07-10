@@ -6,6 +6,7 @@ use rust_wheel::model::user::login_user_info::LoginUserInfo;
 use crate::model::diesel::tik::custom_tik_models::{TodoAdd, TodoUpdate};
 use crate::model::diesel::tik::tik_models::{Todo};
 use crate::model::request::task::add_task_request::AddTaskRequest;
+use crate::model::request::task::query_task_request::QueryTaskRequest;
 use crate::utils::database::get_connection;
 use crate::diesel::ExpressionMethods;
 use crate::model::diesel::tik::tik_schema::todo::user_id;
@@ -33,12 +34,14 @@ pub fn task_create(request: &Json<AddTaskRequest>, login_user_info: LoginUserInf
     return Ok(inserted_result.unwrap());
 }
 
-pub fn query_task(login_user_info: LoginUserInfo) -> Vec<Todo> {
+pub fn query_task(query: QueryTaskRequest, login_user_info: LoginUserInfo) -> Vec<Todo> {
     use crate::model::diesel::tik::tik_schema::todo as todo_table;
-    let predicate = todo_table::dsl::user_id.eq(login_user_info.userId);
+    let predicate = todo_table::dsl::user_id.eq(login_user_info.userId).and(
+        todo_table::dsl::parent.eq(query.parent)
+    );
     let results = todo_table::table.filter(predicate)
         .load::<Todo>(&get_connection())
-        .expect("Error loading playlist");
+        .expect("Error loading tasks");
     return results;
 }
 
