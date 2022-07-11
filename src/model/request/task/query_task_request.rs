@@ -7,5 +7,7 @@ use rocket_okapi::okapi::schemars;
 #[allow(non_snake_case)]
 pub struct QueryTaskRequest {
     pub name: Option<String>,
-    pub parent: i64
+    pub parent: Option<i64>,
+    pub start_time: Option<i64>,
+    pub end_time: Option<i64>
 }

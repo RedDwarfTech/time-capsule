@@ -36,12 +36,20 @@ pub fn task_create(request: &Json<AddTaskRequest>, login_user_info: LoginUserInf
     return Ok(inserted_result.unwrap());
 }
 
-pub fn query_task(query: QueryTaskRequest, login_user_info: LoginUserInfo) -> Vec<Todo> {
+pub fn query_task(request: QueryTaskRequest, login_user_info: LoginUserInfo) -> Vec<Todo> {
     use crate::model::diesel::tik::tik_schema::todo as todo_table;
-    let predicate = todo_table::dsl::user_id.eq(login_user_info.userId).and(
-        todo_table::dsl::parent.eq(query.parent)
-    );
-    let results = todo_table::table.filter(predicate)
+    let mut query = todo_table::table.into_boxed::<diesel::pg::Pg>();
+    query = query.filter(todo_table::dsl::user_id.eq(login_user_info.userId));
+    if let Some(parent_req) = &request.parent {
+        query = query.filter(todo_table::dsl::parent.eq(parent_req));
+    }
+    if let Some(start_time_req) = &request.start_time {
+        query = query.filter(todo_table::dsl::schedule_time.gt(start_time_req));
+    }
+    if let Some(end_time_req) = &request.end_time {
+        query = query.filter(todo_table::dsl::schedule_time.lt(end_time_req));
+    }
+    let results = query
         .load::<Todo>(&get_connection())
         .expect("Error loading tasks");
     return results;

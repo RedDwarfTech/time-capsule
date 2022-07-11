@@ -4,7 +4,7 @@ use rocket_okapi::okapi::schemars;
 use crate::model::diesel::tik::tik_models::Todo;
 
 #[derive(Debug, Serialize, JsonSchema, Default)]
-pub struct TodoResponse {
+pub struct TodoTaskResponse {
     pub id: i64,
     pub name: String,
     pub is_complete: i32,
@@ -15,7 +15,7 @@ pub struct TodoResponse {
     pub complete_time: i64
 }
 
-impl From<&Todo> for TodoResponse {
+impl From<&Todo> for TodoTaskResponse {
     fn from(p: &Todo) -> Self {
         Self {
             id: p.id,

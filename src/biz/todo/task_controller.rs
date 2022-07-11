@@ -11,7 +11,7 @@ use crate::model::request::task::query_task_request::QueryTaskRequest;
 use crate::model::request::todo::del_task_request::DelTaskRequest;
 use crate::model::request::todo::probe_todo_request::ProbeTodoRequest;
 use crate::model::request::todo::update_todo_request::UpdateTodoRequest;
-use crate::model::response::todo::todo_response::TodoResponse;
+use crate::model::response::todo::todo_response::TodoTaskResponse;
 use crate::service::todo::task_service::{del_task, probe_todo, query_task, task_create, update_task};
 
 pub fn get_routes_and_docs(_settings: &OpenApiSettings) -> (Vec<rocket::Route>, OpenApi) {
@@ -23,7 +23,7 @@ pub fn get_routes_and_docs(_settings: &OpenApiSettings) -> (Vec<rocket::Route>, 
 /// 返回待办事项列表
 #[openapi(tag = "待办事项")]
 #[get("/v1/list?<query..>")]
-pub fn list(query: QueryTaskRequest, login_user_info: LoginUserInfo) -> Json<ApiResponse<Vec<TodoResponse>>> {
+pub fn list(query: QueryTaskRequest, login_user_info: LoginUserInfo) -> Json<ApiResponse<Vec<TodoTaskResponse>>> {
     let todo_list = query_task(query, login_user_info);
     let todo_resp = map_entity(todo_list);
     let boxed_response = box_type_rest_response(todo_resp);
@@ -35,11 +35,11 @@ pub fn list(query: QueryTaskRequest, login_user_info: LoginUserInfo) -> Json<Api
 /// 新增待办事项
 #[openapi(tag = "待办事项")]
 #[post("/v1/add",data = "<request>")]
-pub fn add(request: Json<AddTaskRequest>, login_user_info: LoginUserInfo) -> Json<ApiResponse<TodoResponse>> {
+pub fn add(request: Json<AddTaskRequest>, login_user_info: LoginUserInfo) -> Json<ApiResponse<TodoTaskResponse>> {
     let todo_result = task_create(&request, login_user_info);
     return match todo_result {
         Ok(v) => {
-            let todo_res = TodoResponse::from(&v);
+            let todo_res = TodoTaskResponse::from(&v);
             Json::from(box_type_rest_response(todo_res))
         },
         Err(_e) => {
@@ -64,9 +64,9 @@ pub fn del(request: Json<DelTaskRequest>, login_user_info: LoginUserInfo) -> Jso
 /// 更新待办事项
 #[openapi(tag = "待办事项")]
 #[patch("/v1/update",data = "<request>")]
-pub fn update(request: Json<UpdateTodoRequest>, login_user_info: LoginUserInfo) -> Json<ApiResponse<TodoResponse>> {
+pub fn update(request: Json<UpdateTodoRequest>, login_user_info: LoginUserInfo) -> Json<ApiResponse<TodoTaskResponse>> {
     let updated_todo = update_task(&request, login_user_info);
-    let todo_response = TodoResponse::from(&updated_todo);
+    let todo_response = TodoTaskResponse::from(&updated_todo);
     return Json::from(box_type_rest_response(todo_response));
 
 }
