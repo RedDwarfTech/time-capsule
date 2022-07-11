@@ -20,11 +20,11 @@ jobs:
         repository: reddwarf-pro/time-capsule
         path: '.'
 
-    #- name: deploy to cluster
-    #  uses: steebchen/kubectl@v2.0.0
-    #  with: 
-    #    config: ${{ secrets.KUBE_CONFIG_DATA }}
-    #    command: set image --record deployment/time-capsule-service time-capsule-service=${{ secrets.ALI_DOCKER_HUB_REGISTRY }}/#reddwarf-pro/time-capsule:${{ github.sha }} -n reddwarf-pro
+    - name: deploy to cluster
+      uses: steebchen/kubectl@v2.0.0
+      with: 
+        config: ${{ secrets.KUBE_CONFIG_DATA }}
+        command: set image --record deployment/time-capsule-service time-capsule-service=${{ secrets.ALI_DOCKER_HUB_REGISTRY }}/reddwarf-pro/time-capsule:${{ github.sha }} -n reddwarf-pro
     
     - name: retry action
       uses: Wandalen/wretry.action@v1.0.11
