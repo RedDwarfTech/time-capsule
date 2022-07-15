@@ -1,6 +1,6 @@
 use diesel::{RunQueryDsl, QueryDsl, BoolExpressionMethods, QueryResult};
 use rocket::serde::json::Json;
-use rust_wheel::common::util::time_util::get_current_millisecond;
+use rust_wheel::common::util::time_util::{get_current_millisecond, start_of_today};
 use rust_wheel::config::cache::redis_util::get_str_default;
 use rust_wheel::model::user::login_user_info::LoginUserInfo;
 use crate::model::diesel::tik::custom_tik_models::{TodoAdd, TodoUpdate};
@@ -9,7 +9,7 @@ use crate::model::request::task::add_task_request::AddTaskRequest;
 use crate::model::request::task::query_task_request::QueryTaskRequest;
 use crate::utils::database::get_connection;
 use crate::diesel::ExpressionMethods;
-use crate::model::diesel::tik::tik_schema::todo::user_id;
+use crate::model::diesel::tik::tik_schema::todo::{is_complete, schedule_time, user_id};
 use crate::model::request::todo::del_task_request::DelTaskRequest;
 use crate::model::request::todo::update_todo_request::UpdateTodoRequest;
 
@@ -51,6 +51,7 @@ pub fn query_task(request: QueryTaskRequest, login_user_info: LoginUserInfo) -> 
     if let Some(end_time_req) = &request.end_time {
         query = query.filter(todo_table::dsl::schedule_time.lt(end_time_req));
     }
+    query = query.filter(schedule_time.ge(start_of_today()).or(is_complete.eq(0)));
     let results = query
         .load::<Todo>(&get_connection())
         .expect("Error loading tasks");
