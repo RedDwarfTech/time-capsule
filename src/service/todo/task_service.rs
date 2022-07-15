@@ -29,6 +29,8 @@ pub fn task_create(request: &Json<AddTaskRequest>, login_user_info: LoginUserInf
         description: request.description.clone(),
         parent: request.parent,
         complete_time: None,
+        original_schedule_time: request.schedule_time.unwrap_or(current_time),
+        device_id: Some(login_user_info.deviceId),
     };
     let inserted_result = diesel::insert_into(todo_table::table)
         .values(&bill_book_role_add)

@@ -35,6 +35,9 @@ pub struct Todo {
     pub description: Option<String>,
     pub parent: i64,
     pub complete_time: Option<i64>,
+    pub device_id: Option<String>,
+    pub device_type: Option<i32>,
+    pub original_schedule_time: i64,
 }
 
 #[derive(Insertable,Queryable,QueryableByName,Debug,Serialize,Deserialize,Default,Clone)]

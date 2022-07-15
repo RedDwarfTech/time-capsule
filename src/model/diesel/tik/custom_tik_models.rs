@@ -47,9 +47,11 @@ pub struct TodoAdd {
     pub is_complete: i32,
     pub priority: i32,
     pub schedule_time: i64,
+    pub original_schedule_time: i64,
     pub description: Option<String>,
     pub parent: i64,
-    pub complete_time: Option<i64>
+    pub complete_time: Option<i64>,
+    pub device_id: Option<String>,
 }
 
 #[derive(Insertable,Queryable,QueryableByName,Debug,Serialize,Deserialize,Default,Clone)]

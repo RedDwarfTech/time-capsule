@@ -25,6 +25,9 @@ table! {
         description -> Nullable<Varchar>,
         parent -> Int8,
         complete_time -> Nullable<Int8>,
+        device_id -> Nullable<Varchar>,
+        device_type -> Nullable<Int4>,
+        original_schedule_time -> Int8,
     }
 }
 
