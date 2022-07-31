@@ -51,6 +51,9 @@ pub fn query_task(request: QueryTaskRequest, login_user_info: LoginUserInfo) -> 
     if let Some(end_time_req) = &request.end_time {
         query = query.filter(todo_table::dsl::schedule_time.lt(end_time_req));
     }
+    if let Some(is_complete_req) = &request.is_complete {
+        query = query.filter(is_complete.eq(is_complete_req));
+    }
     query = query.filter(schedule_time.ge(start_of_today()).or(is_complete.eq(0)));
     let results = query
         .load::<Todo>(&get_connection())

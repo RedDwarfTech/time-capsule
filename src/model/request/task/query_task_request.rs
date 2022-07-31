@@ -9,5 +9,6 @@ pub struct QueryTaskRequest {
     pub name: Option<String>,
     pub parent: Option<i64>,
     pub start_time: Option<i64>,
-    pub end_time: Option<i64>
+    pub end_time: Option<i64>,
+    pub is_complete: Option<i32>
 }
